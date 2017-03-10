@@ -3,4 +3,7 @@
 
 @import "{{ site.theme }}";
 
-* {background: red;}
+h1 {
+  background: red !important;
+
+}
