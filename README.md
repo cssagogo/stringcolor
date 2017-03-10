@@ -1,2 +1,5 @@
 # String Color
-An extension that generates a color from a passed in string and applies the color as a background color to the element.
+A pure.js extension to generate a background color from the color passed.
+
+### String Color
+A pure.js extension to generate a background color from the color passed.
