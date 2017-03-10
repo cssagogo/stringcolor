@@ -1,7 +1,3 @@
----
----
-
-@import "{{ site.theme }}";
 
 # String Color
 A plain js extension to generate a background color from the color passed.
