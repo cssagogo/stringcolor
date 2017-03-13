@@ -1,3 +1,6 @@
 {
-  "presets": ["es2015-without-strict"]
+  "sourceType": "script",
+  "presets": [
+    ["es2015", {"modules": false}]
+  ]
 }

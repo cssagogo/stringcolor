@@ -1,13 +1,26 @@
 module.exports = function (grunt) {
 
-    'use strict';
+    "use strict";
+
+    var path = {
+        test: "http://localhost:8001/test/index.html",
+        dist: "assets/dist/",
+        css: {
+            src:  "assets/src/scss/",
+            dist: "assets/dist/css/"
+        },
+        js: {
+            src: "assets/src/js/",
+            dist:"assets/dist/js/"
+        }
+    };
 
     var config = {
-        pkg: grunt.file.readJSON('package.json'),
+        pkg: grunt.file.readJSON("package.json"),
         mocha_phantomjs: {
             test: {
                 options: {
-                    urls: ['http://localhost:8001/test/index.html']
+                    urls: [path.test]
                 }
             }
         },
@@ -15,15 +28,15 @@ module.exports = function (grunt) {
             mocha: {
                 options: {
                     port: 8001,
-                    base: '.'
+                    base: "."
                 }
             },
             preview: {
                 options: {
                     keepalive: true,
                     port: 8000,
-                    base: '.',
-                    hostname: 'localhost',
+                    base: ".",
+                    hostname: "localhost",
                     debug: true,
                     open: true
                 }
@@ -31,71 +44,74 @@ module.exports = function (grunt) {
 
         },
         clean: {
-            all: ['dist'],
-            js: ['dist/**/*.js','dist/**/*.js.map'],
-            css: ['dist/**/*.css','dist/**/*.css.map']
+            all: [path.dist],
+            js: [path.dist + "**/*.js", path.dist + "**/*.js.map"],
+            css: [path.dist + "**/*.css", path.dist + "**/*.css.map"]
         },
-
         sass: {
             expanded: {
                 options: {
-                    outputStyle: 'expanded',
+                    outputStyle: "expanded",
                     sourceMap: true,
                     precision: 5
                 },
-                files: {
-                    'dist/<%=pkg.name %>.css': 'src/scss/index.scss'
-                }
+                files: [
+                    {
+                        src: [path.css.src + "index.scss"],
+                        dest: path.css.dist + "<%=pkg.name %>.css"},
+                ]
             },
             min: {
                 options: {
-                    outputStyle: 'compressed',
+                    outputStyle: "compressed",
                     sourceMap: true,
                     precision: 5
                 },
-                files: {
-                    'dist/<%=pkg.name %>.min.css': 'src/scss/index.scss'
-                }
+                files: [
+                    {
+                        src: [path.css.src + "index.scss"],
+                        dest: path.css.dist + "<%=pkg.name %>.min.css"},
+                ]
             }
         },
         sasslint: {
             src: {
                 options: {
-                    configFile: '.sass-lint.yml'
+                    configFile: ".sass-lint.yml"
                 },
-                target: ['src/scss/**/*.css']
+                target: [path.css.src + "**/*.scss"]
             }
         },
         csslint: {
             dist: {
                 options: {
-                    csslintrc: '.csslintrc',
+                    csslintrc: ".csslintrc",
                     import: 2
                 },
-                src: ['dist/**/*.css']
+                src: [path.css.dist + "**/*.css"]
             }
         },
-
         concat: {
             options: {
-                separator: ';\n',
+                separator: ";\n",
                 sourceMap: true,
-                sourceMapStyle: 'link'
+                sourceMapStyle: "link"
             },
             dist: {
-                src: ['src/js/**/*.js'],
-                dest: 'dist/<%=pkg.name %>.js'
+                src: [path.js.src + "**/*.js"],
+                dest: path.js.dist + "<%=pkg.name %>.js"
             }
         },
         babel: {
             options: {
                 sourceMap: true,
-                presets: ['es2015-without-strict']
+                sourceType: "script",
+                presets: [
+                    ["es2015", {modules: false}],
+                ]
             },
             dist: {
-                files: {
-                    'dist/<%=pkg.name %>.js': 'dist/<%=pkg.name %>.js'
-                }
+                files: {}
             }
         },
         uglify: {
@@ -107,19 +123,10 @@ module.exports = function (grunt) {
                         drop_debugger: false
                     }
                 },
-                files: {
-                    'dist/<%=pkg.name %>.min.js': 'dist/<%=pkg.name %>.js'
-                }
-                // files: [
-                //     {
-                //         expand: true,
-                //         cwd: 'src/js',
-                //         src: ['**/*.js', '!_grunt/**', '!**/*.test.js'],
-                //         rename: function () {
-                //             return 'dist/<%=pkg.name %>.min.js';
-                //         }
-                //     }
-                // ]
+                files: [{
+                    src: [path.js.dist + "<%=pkg.name %>.js"],
+                    dest: path.js.dist + "<%=pkg.name %>.min.js"
+                }]
             }
         },
         jshint: {
@@ -127,66 +134,81 @@ module.exports = function (grunt) {
                 jshintrc: true
             },
             all: [
-                'Gruntfile.js',
-                'test/index.js',
-                //'src/**/*.js',
-                'dist/**/*.js',
-                '!dist/**/*.min.js'
+                "Gruntfile.js",
+                "test/index.js",
+                "src/**/*.js",
+                "dist/**/*.js",
+                "!dist/**/*.min.js"
             ]
         },
-
         watch: {
             js: {
-                files: ['src/**/*.js'],
-                tasks: ['clean:js', 'concat:dist', 'uglify:dist', 'test_js']
+                files: [path.js.src + "**/*.js"],
+                tasks: ["build_js", "test_js"]
             },
             scss: {
-                files: ['src/**/*.scss'],
-                tasks: ['clean:css', 'sass:expanded', 'sass:min', 'test_css']
+                files: [path.css.src + "**/*.scss"],
+                tasks: ["build_css", "test_css"]
             }
         }
     };
 
-    grunt.task.registerTask("configureBabel", "configures babel options", function() {
-        config.babel.options.inputSourceMap = grunt.file.readJSON("dist/<%=pkg.name %>.js.map");
+
+    grunt.task.registerTask("babelConfig", "configures babel options", function() {
+
+        var jsPath = path.js.dist + config.pkg.name + ".js";
+        config.babel.options.inputSourceMap = grunt.file.readJSON(jsPath + ".map");
+        config.babel.dist.files[jsPath] = jsPath;
+
     });
+
 
     grunt.initConfig(config);
     require("load-grunt-tasks")(grunt);
 
 
-    grunt.registerTask('default', [
-        'production',
-        'test'
+    grunt.registerTask("default", [
+        "build",
+        "test"
     ]);
 
-    grunt.registerTask('production', [
-        'clean',
-        'concat:dist',
-        'babel',
-        'uglify:dist',
-        'sass:expanded',
-        'sass:min'
+
+    grunt.registerTask("build", [
+        "clean",
+        "build_js",
+        "build_css"
+    ]);
+    grunt.registerTask("build_js", [
+        "clean:js",
+        "concat:dist",
+        "babelConfig",
+        "babel",
+        "uglify:dist"
+    ]);
+    grunt.registerTask("build_css", [
+        "clean:css",
+        "sass:expanded",
+        "sass:min"
     ]);
 
-    grunt.registerTask('test', [
-        'test_js',
-        'test_css'
+
+    grunt.registerTask("test", [
+        "test_js",
+        "test_css"
+    ]);
+    grunt.registerTask("test_js", [
+        "jshint",
+        "connect:mocha",
+        "mocha_phantomjs"
+    ]);
+    grunt.registerTask("test_css", [
+        "sasslint:src",
+        "csslint:dist"
     ]);
 
-    grunt.registerTask('test_js', [
-        'jshint',
-        'connect:mocha',
-        'mocha_phantomjs'
-    ]);
 
-    grunt.registerTask('test_css', [
-        'sasslint:src',
-        'csslint:dist'
-    ]);
-
-    grunt.registerTask('preview', [
-        'connect:preview'
+    grunt.registerTask("preview", [
+        "connect:preview"
     ]);
 
 };

@@ -26,20 +26,16 @@
 </script>
 
 <!-- Include anything you want to test -->
-<script src="/dist/stringcolor.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- TODO: This path should be added via Grunt. -->
+<script src="/assets/dist/js/stringcolor.min.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- Spec files -->
 <script src="index.js" type="text/javascript" charset="utf-8"></script>
 
 <!-- run mocha -->
 <script type="text/javascript" charset="utf-8">
-    // If tests run in a real browser
-    // Can alternatively do a check on window.PHANTOMJS
-    //if (navigator.userAgent.indexOf('PhantomJS') < 0) {
-        mocha.run();
-    //}
-
-
+    mocha.run();
 </script>
+
 </body>
 </html>
