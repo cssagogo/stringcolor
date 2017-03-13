@@ -1,5 +1,7 @@
 (function(){
 
+    'use strict';
+
     [].forEach.call(document.querySelectorAll('[data-stringcolor]'), function(val, i) {
 
         var el, text, h, s, l, styles;
@@ -43,38 +45,6 @@
             }
         }
 
-
     });
-
-})();
-
-
-(function(){
-
-    function testmeout() {
-        return "dog";
-    }
-
-    const PI = 3.141593;
-
-
-    var materials = [
-        'Hydrogen',
-        'Helium',
-        'Lithium',
-        'Beryllium'
-    ];
-
-    var materialsLength1 = materials.map(function(material) {
-        return material.length;
-    });
-
-    var materialsLength2 = materials.map((material) => {
-            return material.length;
-    });
-
-    var materialsLength3 = materials.map(material => material.length);
-
-    console.log([PI, materialsLength1, materialsLength2, materialsLength3, testmeout()]);
 
 })();

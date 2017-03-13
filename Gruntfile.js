@@ -2,7 +2,6 @@ module.exports = function (grunt) {
 
     'use strict';
 
-
     var config = {
         pkg: grunt.file.readJSON('package.json'),
         mocha_phantomjs: {
@@ -91,7 +90,7 @@ module.exports = function (grunt) {
         babel: {
             options: {
                 sourceMap: true,
-                presets: ['babel-preset-es2015']
+                presets: ['es2015-without-strict']
             },
             dist: {
                 files: {
