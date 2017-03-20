@@ -1,6 +1,12 @@
+$color1: #00d6b2;
+$color2: #c00;
+
 .red {
-  color:green;
+  color: $color1;
+
   .pink {
-    color:red
+    color: $color2;
+
   }
+
 }

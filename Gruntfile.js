@@ -74,14 +74,18 @@ module.exports = function (grunt) {
                 ]
             }
         },
-        sasslint: {
-            src: {
-                options: {
-                    configFile: ".sass-lint.yml"
-                },
-                target: [path.css.src + "**/*.scss"]
+
+        scsslint: {
+            allFiles: [
+                path.css.src + "/*.scss",
+            ],
+            options: {
+                config: '.scss-lint.yml',
+                colorizeOutput: true,
+                maxBuffer: 600 * 1024
             }
         },
+
         csslint: {
             dist: {
                 options: {
@@ -202,7 +206,7 @@ module.exports = function (grunt) {
         "mocha_phantomjs"
     ]);
     grunt.registerTask("test_css", [
-        "sasslint:src",
+        "scsslint",
         "csslint:dist"
     ]);
 
