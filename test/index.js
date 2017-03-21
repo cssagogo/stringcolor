@@ -1,9 +1,12 @@
-describe('String Color Tests', function() {
-
+(function () {
     "use strict";
 
-    // it("testmeout()", function () {
-    //     assert.equal(testmeout(), "dog");
-    // });
+    describe('String Color Tests', function() {
 
-});
+        // it("testmeout()", function () {
+        //     assert.equal(stringcolor.getHSL("dog"), "dog");
+        // });
+
+    });
+
+}());

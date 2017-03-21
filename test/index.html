@@ -6,28 +6,28 @@
     <link rel="stylesheet" href="mocha/css/mocha.css" type="text/css" charset="utf-8" />
 </head>
 <body>
-<!-- Required for browser reporter -->
-<div id="mocha"></div>
-
-<!-- mocha -->
-<script src="mocha/js/mocha.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" charset="utf-8">
-    // This will be overridden by mocha-helper if you run with grunt
-    mocha.setup('bdd');
-    mocha.reporter('html');
-</script>
-
-<!-- Include your assertion lib of choice -->
-<script src="mocha/js/chai.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript" charset="utf-8">
-    // Setup chai
-    var expect = chai.expect;
-    var assert = chai.assert;
-</script>
 
 <!-- Include anything you want to test -->
 <!-- TODO: This path should be added via Grunt. -->
 <script src="/assets/dist/js/stringcolor.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Mocha & Chai Setup -->
+<script src="mocha/js/mocha.js" type="text/javascript" charset="utf-8"></script>
+<script src="mocha/js/chai.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+
+    // This will be overridden by mocha-helper if you run with grunt
+    mocha.setup('bdd');
+    mocha.reporter('html');
+
+    // Setup chai
+    var expect = chai.expect;
+    var assert = chai.assert;
+
+</script>
+
+<!-- Required for browser reporter -->
+<div id="mocha"></div>
 
 <!-- Spec files -->
 <script src="index.js" type="text/javascript" charset="utf-8"></script>

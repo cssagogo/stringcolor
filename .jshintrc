@@ -104,6 +104,7 @@
     "expect"      : true,
     "assert"      : true,
     "require"     : true,
-    "module"      : true
+    "module"      : true,
+    "stringcolor" : true
   }
 }
